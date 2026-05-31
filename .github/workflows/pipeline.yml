@@ -9,24 +9,6 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  # build_and_test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v6
-  #     - uses: actions/setup-node@v6        
-  #       with:          
-  #         node-version: lts/*
-  #     - name: Install dependencies        
-  #       run: npm install
-  #     - name: Install ci dependencies
-  #       run: npm ci
-  #     - name: Install Playwright Browsers
-  #       run: npx playwright install --with-deps
-  #     - name: Check style        
-  #       run: npm run lint
-  #     - name: Run test        
-  #       run: npm --prefix server run test
-  
   test:
     runs-on: ubuntu-latest
     steps:
@@ -66,7 +48,7 @@ jobs:
         run: npm ci
       - name: Create server .env file
         run: |
-          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> server/.env
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > server/.env
           echo "TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }}" >> server/.env
           echo "PORT=3003" >> server/.env
           echo "SECRET=${{ secrets.SECRET }}" >> server/.env
@@ -80,15 +62,6 @@ jobs:
         if: ${{ (github.event_name == 'push') && (contains(join(github.event.commits.*.message), '#skip') == false) }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
   
-  # deploy:
-  #   needs: [build_and_test]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Trigger deployment
-  #       if: ${{ (github.event_name == 'push') && (contains(join(github.event.commits.*.message), '#skip') == false) }}
-  #       run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
-
   # notify_success:
   #   needs: [deploy]
   #   runs-on: ubuntu-latest
