@@ -40,7 +40,7 @@ jobs:
       - name: Check style        
         run: npm run lint --prefix server; npm run lint --prefix client
   
-  build_and_deploy:
+  build:
     needs: [test, lint]
     runs-on: ubuntu-latest
     steps:
@@ -48,22 +48,6 @@ jobs:
       - uses: actions/setup-node@v6        
         with:          
           node-version: lts/*
-      # - name: Create server .env file
-      #   run: |
-      #     echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" > server/.env
-      #     echo "TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }}" >> server/.env
-      #     echo "PORT=3003" >> server/.env
-      #     echo "SECRET=${{ secrets.SECRET }}" >> server/.env
-      # - name: Install dependencies        
-      #   run: npm install; npm --prefix server install; npm --prefix client install
-      # - name: Install ci dependencies
-      #   run: npm ci
-      # - name: Build app
-      #   run: npm run build
-      # - name: Start app
-      #   run: npm run start *
-      # - name: echo "App is running, starting deployment.."
-      #   run: echo "App is running, starting deployment.."
       - name: Trigger deployment
         if: ${{ (github.event_name == 'push') && (contains(join(github.event.commits.*.message), '#skip') == false) }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
