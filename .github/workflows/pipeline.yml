@@ -70,6 +70,9 @@ jobs:
         run: npm run start *
       - name: echo "App is running, starting deployment.."
         run: echo "App is running, starting deployment.."
+      - name: Trigger deployment
+        if: ${{ (github.event_name == 'push') && (contains(join(github.event.commits.*.message), '#skip') == false) }}
+        run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
   
   # deploy:
   #   needs: [build_and_test]
