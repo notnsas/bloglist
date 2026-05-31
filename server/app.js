@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRouter)
 }
 
-// serve the built Vite frontend in production
+// serve the built Vite frontend in productions
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/dist')))
   app.get('/*splat', (req, res) => {
