@@ -94,7 +94,7 @@ jobs:
           avatar_url: ${{ secrets.AVATAR_URL }}
       
   tag_release:
-    needs: [build_and_deploy]
+    needs: [deploy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
