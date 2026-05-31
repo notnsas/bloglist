@@ -64,6 +64,12 @@ jobs:
         run: npm install; npm --prefix server install; npm --prefix client install
       - name: Install ci dependencies
         run: npm ci
+      - name: Create server .env file
+        run: |
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> server/.env
+          echo "TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }}" >> server/.env
+          echo "PORT=3003" >> server/.env
+          echo "SECRET=${{ secrets.SECRET }}" >> server/.env
       - name: Build app
         run: npm run build
       - name: Start app
